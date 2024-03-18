@@ -17,6 +17,7 @@ moshiKotlin = "1.14.0"
 navigationCompose = "2.7.7"
 pagingCommonKtx = "3.2.1"
 pagingCompose = "3.3.0-alpha04"
+pagingRuntimeKtx = "3.2.1"
 retrofit = "2.9.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
@@ -27,6 +28,7 @@ material = "1.11.0"
 room = "2.6.1"
 
 [libraries]
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 compose-foundation-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
