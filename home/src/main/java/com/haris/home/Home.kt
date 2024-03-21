@@ -1,6 +1,7 @@
 package com.haris.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,11 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,6 +40,7 @@ fun Home(id: String?, navigateToDetails: (Item) -> Unit) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Home(
     viewModel: HomeViewModel,
@@ -49,11 +55,23 @@ private fun Home(
         }
     }
 
-    HandleState(
-        state = state,
-        navigateToDetails = navigateToDetails,
-        retry = { viewModel.retry() }
-    )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.recipes))
+                },
+            )
+        }
+    ) {
+        Box(modifier = Modifier.padding(it)) {
+            HandleState(
+                state = state,
+                navigateToDetails = navigateToDetails,
+                retry = { viewModel.retry() }
+            )
+        }
+    }
 }
 
 @Composable
@@ -157,23 +175,34 @@ private fun Loading(
 @Composable
 private fun Content(items: List<Item>, navigateToDetails: (Item) -> Unit) {
     LazyColumn(
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(items = items, key = { it.canonicalId }) { item ->
-            Item(item = item, navigateToDetails = navigateToDetails)
+        itemsIndexed(
+            items = items,
+            key = { _: Int, item: Item -> item.canonicalId }
+        ) { index, item ->
+            Item(
+                item = item,
+                navigateToDetails = navigateToDetails,
+                isLastItem = index < items.size
+            )
         }
     }
 }
 
 @Composable
-private fun Item(item: Item, navigateToDetails: (Item) -> Unit) {
-    Card(
-        onClick = { navigateToDetails(item) }
-    ) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = item.name
-        )
+private fun Item(item: Item, navigateToDetails: (Item) -> Unit, isLastItem: Boolean) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        TextButton(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            onClick = { navigateToDetails(item) }
+        ) {
+            Text(text = item.name)
+        }
+
+        if (isLastItem) {
+            HorizontalDivider()
+        }
     }
 }
