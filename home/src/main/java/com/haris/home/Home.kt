@@ -45,7 +45,7 @@ private fun Home(
 
     if (id != null) {
         LaunchedEffect(Unit) {
-            viewModel.removeFromList(id)
+            viewModel.removeItem(id)
         }
     }
 
@@ -160,7 +160,7 @@ private fun Content(items: List<Item>, navigateToDetails: (Item) -> Unit) {
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(items = items, key = { it.canonicalId.ifEmpty { it.name } }) { item ->
+        items(items = items, key = { it.canonicalId }) { item ->
             Item(item = item, navigateToDetails = navigateToDetails)
         }
     }

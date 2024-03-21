@@ -14,8 +14,8 @@ internal fun ItemListDto.toItemList(): ItemList =
 private fun ItemDto.toItem(): Item =
     Item(
         name = this.name ?: "",
-        cookTimeMinutes = this.cookTimeMinutes ?: 0.0,
-        totalTimeMinutes = this.totalTimeMinutes ?: 0.0,
-        canonicalId = this.canonicalId ?: "",
+        cookTimeMinutes = this.cook_time_minutes ?: 0.0,
+        totalTimeMinutes = this.total_time_minutes ?: 0.0,
+        canonicalId = this.canonical_id ?: "",
         description = this.description ?: ""
     )

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.haris.data.Result
 import com.haris.home.data.entities.Item
 import com.haris.home.interactors.GetRecipes
+import com.haris.home.interactors.RemoveFromList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
-    private val getRecipes: GetRecipes
+    private val getRecipes: GetRecipes,
+    private val removeFromList: RemoveFromList
 ) : ViewModel() {
 
     init {
@@ -50,8 +52,8 @@ internal class HomeViewModel @Inject constructor(
         initialValue = ViewState.Empty
     )
 
-    fun removeFromList(id: String) {
-
+    fun removeItem(id: String) {
+        removeFromList(id)
     }
 
     fun retry() {
