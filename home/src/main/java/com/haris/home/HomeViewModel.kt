@@ -68,7 +68,9 @@ internal class HomeViewModel @Inject constructor(
     }
 
     fun retry() {
-
+        viewModelScope.launch {
+            getRecipes()
+        }
     }
 }
 
