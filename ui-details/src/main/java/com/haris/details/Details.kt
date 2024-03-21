@@ -71,7 +71,7 @@ private fun Details(
                     style = MaterialTheme.typography.titleMedium,
                     text = stringResource(id = R.string.total_time)
                 )
-                Text(text = state.prepTime)
+                Text(text = stringResource(id = R.string.mins, state.prepTime))
 
                 HorizontalDivider()
 
@@ -79,7 +79,7 @@ private fun Details(
                     style = MaterialTheme.typography.titleMedium,
                     text = stringResource(id = R.string.cook_time)
                 )
-                Text(text = state.cookTime)
+                Text(text = stringResource(id = R.string.mins, state.cookTime))
 
                 HorizontalDivider()
 

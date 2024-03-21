@@ -11,4 +11,6 @@
 
     <string name="total_time">Total time</string>
     <string name="cook_time">Cook time</string>
+
+    <string name="mins">%1$s mins</string>
 </resources>
