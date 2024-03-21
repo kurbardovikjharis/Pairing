@@ -1,5 +1,6 @@
-package com.haris.home
+package com.haris.home.repositories
 
+import com.haris.home.data.dtos.ItemListDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -11,5 +12,5 @@ interface Api {
         "X-RapidAPI-Host: tasty.p.rapidapi.com"
     )
     @GET("recipes/list?from=0&size=20&tags=under_30_minutes")
-    suspend fun getRecipes(): Response<ItemList>
+    suspend fun getRecipes(): Response<ItemListDto>
 }

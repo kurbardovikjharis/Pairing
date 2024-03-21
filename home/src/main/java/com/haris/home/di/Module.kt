@@ -1,8 +1,8 @@
 package com.haris.home.di
 
-import com.haris.home.Api
-import com.haris.home.Repository
-import com.haris.home.RepositoryImpl
+import com.haris.home.repositories.Api
+import com.haris.home.repositories.Repository
+import com.haris.home.repositories.RepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

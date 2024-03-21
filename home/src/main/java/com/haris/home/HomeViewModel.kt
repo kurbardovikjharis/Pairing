@@ -2,6 +2,9 @@ package com.haris.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.haris.data.Result
+import com.haris.home.data.entities.Item
+import com.haris.home.interactors.GetRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -12,24 +15,65 @@ import javax.annotation.concurrent.Immutable
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val repository: Repository
+internal class HomeViewModel @Inject constructor(
+    private val getRecipes: GetRecipes
 ) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            repository.getRecipes()
+            getRecipes()
         }
     }
 
-    val state: StateFlow<HomeViewState> = repository.data.map {
-        HomeViewState(it)
+    val state: StateFlow<ViewState> = getRecipes.flow.map {
+        when (it) {
+            is Result.Success -> {
+                ViewState.Success(it.data ?: emptyList())
+            }
+
+            is Result.Loading -> {
+                ViewState.Loading(it.data ?: emptyList())
+            }
+
+            is Result.Error -> {
+                ViewState.Error(
+                    message = it.message ?: "",
+                    it.data ?: emptyList()
+                )
+            }
+
+            is Result.None -> ViewState.Empty
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = HomeViewState()
+        initialValue = ViewState.Empty
     )
+
+    fun removeFromList(id: String) {
+
+    }
+
+    fun retry() {
+
+    }
 }
 
 @Immutable
-data class HomeViewState(val data: ItemList? = null)
+internal sealed interface ViewState {
+
+    data class Success(
+        val items: List<Item>
+    ) : ViewState
+
+    data class Error(
+        val message: String,
+        val items: List<Item>
+    ) : ViewState
+
+    data class Loading(
+        val items: List<Item>
+    ) : ViewState
+
+    data object Empty : ViewState
+}

@@ -7,6 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -34,16 +35,13 @@ private sealed class LeafScreen(
 
     data object Home : LeafScreen("home")
 
-    data object RestaurantDetails :
-        LeafScreen("restaurant_details/{id}/optional_arguments?description={description}?prepTime={prepTime}?cookTime={cookTime}") {
+    data object Details :
+        LeafScreen("details/{id}") {
         fun createRoute(
             root: Screen,
             id: String,
-            description: String,
-            prepTime: String,
-            cookTime: String
         ): String {
-            return "${root.route}/restaurant_details/$id/optional_arguments?description=$description?prepTime=$prepTime?cookTime=$cookTime"
+            return "${root.route}/details/$id"
         }
     }
 }
@@ -76,7 +74,7 @@ private fun NavGraphBuilder.addHomeTopLevel(
         startDestination = LeafScreen.Home.createRoute(Screen.Home),
     ) {
         addHome(navController, Screen.Home)
-        addRestaurantDetails(navController, Screen.Home)
+        addDetails(navController, Screen.Home)
     }
 }
 
@@ -88,14 +86,15 @@ private fun NavGraphBuilder.addHome(
     composable(
         route = LeafScreen.Home.createRoute(root)
     ) {
-        Home {
+        val id = navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<String>("id")?.observeAsState()?.value
+
+        Home(id = id) {
             navController.navigate(
-                LeafScreen.RestaurantDetails.createRoute(
-                    root,
-                    it.canonical_id ?: "",
-                    it.description ?: "",
-                    it.total_time_minutes?.toString() ?: "",
-                    it.cook_time_minutes?.toString() ?: ""
+                LeafScreen.Details.createRoute(
+                    root = root,
+                    id = it.canonicalId
                 )
             )
         }
@@ -103,19 +102,25 @@ private fun NavGraphBuilder.addHome(
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addRestaurantDetails(
+private fun NavGraphBuilder.addDetails(
     navController: NavController,
     root: Screen
 ) {
     composable(
-        route = LeafScreen.RestaurantDetails.createRoute(root),
+        route = LeafScreen.Details.createRoute(root),
         arguments = listOf(
             navArgument("id") { type = NavType.StringType },
         ),
-    ) {it->
-        Details(navController::navigateUp) {
-            it
-        }
+    ) {
+        Details(
+            navigateUp = navController::navigateUp,
+            markAsRead = {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("id", it)
+                navController.popBackStack()
+            }
+        )
     }
 }
 

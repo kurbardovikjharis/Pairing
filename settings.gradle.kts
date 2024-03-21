@@ -17,3 +17,5 @@ rootProject.name = "Pairing"
 include(":app")
 include(":home")
 include(":details")
+include(":data")
+include(":resources")

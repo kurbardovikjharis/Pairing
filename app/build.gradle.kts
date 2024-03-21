@@ -52,8 +52,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
     implementation(project(":details"))
     implementation(project(":home"))
+    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -74,6 +76,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.moshi.kotlin)
+
+    implementation(libs.androidx.runtime.livedata)
 
     // test
     testImplementation(libs.junit)
