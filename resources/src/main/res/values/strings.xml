@@ -3,7 +3,7 @@
 
     <string name="retry">Retry</string>
 
-    <string name="recipes">Recipes</string>
+    <string name="slice_recipes">Slice recipes</string>
     <string name="details">Details</string>
     <string name="back_button_acc">Back button</string>
     <string name="mark_as_read">Mark as read</string>

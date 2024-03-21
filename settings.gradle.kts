@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Pairing"
 include(":app")
-include(":home")
-include(":details")
+include(":ui-home")
+include(":ui-details")
 include(":data")
 include(":resources")

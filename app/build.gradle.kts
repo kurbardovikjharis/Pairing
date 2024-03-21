@@ -53,8 +53,8 @@ android {
 
 dependencies {
     implementation(project(":data"))
-    implementation(project(":details"))
-    implementation(project(":home"))
+    implementation(project(":ui-details"))
+    implementation(project(":ui-home"))
     implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)

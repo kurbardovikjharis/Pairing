@@ -40,7 +40,7 @@ private fun Details(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.details))
+                    Text(text = state.name)
                 },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {

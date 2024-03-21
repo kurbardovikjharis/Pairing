@@ -12,6 +12,7 @@ import javax.annotation.concurrent.Immutable
 import javax.inject.Inject
 
 const val ID = "id"
+const val NAME = "name"
 const val DESCRIPTION = "description"
 const val PREP_TIME = "prepTime"
 const val COOK_TIME = "cookTime"
@@ -25,6 +26,7 @@ class DetailsViewModel @Inject constructor(
         MutableStateFlow(
             State(
                 id = savedStateHandle.get<String>(ID) ?: "",
+                name = savedStateHandle.get<String>(NAME) ?: "",
                 description = savedStateHandle.get<String>(DESCRIPTION) ?: "",
                 prepTime = savedStateHandle.get<String>(PREP_TIME) ?: "",
                 cookTime = savedStateHandle.get<String>(COOK_TIME) ?: ""
@@ -39,6 +41,7 @@ class DetailsViewModel @Inject constructor(
 @Immutable
 data class State(
     val id: String = "",
+    val name: String = "",
     val description: String = "",
     val prepTime: String = "",
     val cookTime: String = ""

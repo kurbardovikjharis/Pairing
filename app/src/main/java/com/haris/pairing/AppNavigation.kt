@@ -36,15 +36,16 @@ private sealed class LeafScreen(
     data object Home : LeafScreen("home")
 
     data object Details :
-        LeafScreen("details/{id}/optional_arguments?description={description}?prepTime={prepTime}?cookTime={cookTime}") {
+        LeafScreen("details/{id}/optional_arguments?name={name}?description={description}?prepTime={prepTime}?cookTime={cookTime}") {
         fun createRoute(
             root: Screen,
             id: String,
+            name: String,
             description: String,
             prepTime: String,
             cookTime: String
         ): String {
-            return "${root.route}/details/$id/optional_arguments?description=$description?prepTime=$prepTime?cookTime=$cookTime"
+            return "${root.route}/details/$id/optional_arguments?name=$name?description=$description?prepTime=$prepTime?cookTime=$cookTime"
         }
     }
 }
@@ -89,12 +90,13 @@ private fun NavGraphBuilder.addHome(
     composable(
         route = LeafScreen.Home.createRoute(root)
     ) {
-        val id = it.savedStateHandle.getLiveData<String>("key").observeAsState().value
+        val id = it.savedStateHandle.getLiveData<String>("id").observeAsState().value
         Home(id = id) { item ->
             navController.navigate(
                 LeafScreen.Details.createRoute(
                     root = root,
                     id = item.canonicalId,
+                    name = item.name,
                     description = item.description,
                     prepTime = item.totalTimeMinutes,
                     cookTime = item.cookTimeMinutes
@@ -120,7 +122,7 @@ private fun NavGraphBuilder.addDetails(
             markAsRead = {
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.set("key", it)
+                    ?.set("id", it)
                 navController.popBackStack()
             }
         )

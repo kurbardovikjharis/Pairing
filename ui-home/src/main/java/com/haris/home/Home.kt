@@ -59,7 +59,7 @@ private fun Home(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.recipes))
+                    Text(text = stringResource(id = R.string.slice_recipes))
                 },
             )
         }
