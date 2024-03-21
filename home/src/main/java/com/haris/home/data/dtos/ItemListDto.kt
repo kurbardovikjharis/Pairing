@@ -1,6 +1,6 @@
 package com.haris.home.data.dtos
 
-import kotlinx.serialization.Serializable
+import com.squareup.moshi.JsonClass
 
-@Serializable
+@JsonClass(generateAdapter = true)
 data class ItemListDto(val count: Int?, val results: List<ItemDto>?)
