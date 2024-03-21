@@ -8,4 +8,7 @@
     <string name="back_button_acc">Back button</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="instructions">Instructions</string>
+
+    <string name="total_time">Total time</string>
+    <string name="cook_time">Cook time</string>
 </resources>

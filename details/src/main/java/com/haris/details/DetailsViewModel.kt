@@ -41,6 +41,5 @@ data class State(
     val id: String = "",
     val description: String = "",
     val prepTime: String = "",
-    val cookTime: String = "",
-    val instructions: String = ""
+    val cookTime: String = ""
 )

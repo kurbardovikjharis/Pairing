@@ -3,13 +3,13 @@ package com.haris.details
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -57,8 +57,8 @@ private fun Details(
             modifier = Modifier.padding(it),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
                     onClick = { markAsRead(state.id) }
@@ -66,19 +66,33 @@ private fun Details(
                     Text(text = stringResource(id = R.string.mark_as_read))
                 }
                 HorizontalDivider()
+
+                Text(
+                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(id = R.string.total_time)
+                )
                 Text(text = state.prepTime)
 
                 HorizontalDivider()
+
+                Text(
+                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(id = R.string.cook_time)
+                )
                 Text(text = state.cookTime)
 
                 HorizontalDivider()
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally),
-                    text = stringResource(id = R.string.instructions)
-                )
-                Text(text = state.description)
+
+                if (state.description.isNotEmpty()) {
+                    Text(
+                        style = MaterialTheme.typography.titleMedium,
+                        text = stringResource(id = R.string.instructions)
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = state.description
+                    )
+                }
             }
         }
     }
