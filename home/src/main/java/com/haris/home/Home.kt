@@ -167,6 +167,7 @@ private fun Loading(
         CircularProgressIndicator(
             modifier = Modifier
                 .size(50.dp)
+                .testTag("progress")
                 .testTag("progress"),
         )
     }
