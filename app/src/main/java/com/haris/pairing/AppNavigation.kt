@@ -36,12 +36,15 @@ private sealed class LeafScreen(
     data object Home : LeafScreen("home")
 
     data object Details :
-        LeafScreen("details/{id}") {
+        LeafScreen("details/{id}/optional_arguments?description={description}?prepTime={prepTime}?cookTime={cookTime}") {
         fun createRoute(
             root: Screen,
             id: String,
+            description: String,
+            prepTime: String,
+            cookTime: String
         ): String {
-            return "${root.route}/details/$id"
+            return "${root.route}/details/$id/optional_arguments?description=$description?prepTime=$prepTime?cookTime=$cookTime"
         }
     }
 }
@@ -87,12 +90,14 @@ private fun NavGraphBuilder.addHome(
         route = LeafScreen.Home.createRoute(root)
     ) {
         val id = it.savedStateHandle.getLiveData<String>("key").observeAsState().value
-
-        Home(id = id) {
+        Home(id = id) { item ->
             navController.navigate(
                 LeafScreen.Details.createRoute(
                     root = root,
-                    id = it.canonicalId
+                    id = item.canonicalId,
+                    description = item.description,
+                    prepTime = item.totalTimeMinutes,
+                    cookTime = item.cookTimeMinutes
                 )
             )
         }

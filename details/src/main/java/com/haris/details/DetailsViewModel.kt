@@ -7,34 +7,29 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.annotation.concurrent.Immutable
 import javax.inject.Inject
+
+const val ID = "id"
+const val DESCRIPTION = "description"
+const val PREP_TIME = "prepTime"
+const val COOK_TIME = "cookTime"
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val id: MutableStateFlow<String?> =
-        MutableStateFlow(savedStateHandle.get<String>("id"))
-    private val desc: MutableStateFlow<String?> =
-        MutableStateFlow(savedStateHandle.get<String>("description"))
-    private val prepTime: MutableStateFlow<String?> =
-        MutableStateFlow(savedStateHandle.get<String>("prepTime"))
-    private val cookTime: MutableStateFlow<String?> =
-        MutableStateFlow(savedStateHandle.get<String>("cookTime"))
-
     val state: StateFlow<State> =
-        combine(id, desc, prepTime, cookTime) { id, desc, prepTime, cookTime ->
+        MutableStateFlow(
             State(
-                id = id ?: "",
-                description = desc ?: "",
-                prepTime = prepTime ?: "",
-                cookTime = cookTime ?: ""
+                id = savedStateHandle.get<String>(ID) ?: "",
+                description = savedStateHandle.get<String>(DESCRIPTION) ?: "",
+                prepTime = savedStateHandle.get<String>(PREP_TIME) ?: "",
+                cookTime = savedStateHandle.get<String>(COOK_TIME) ?: ""
             )
-        }.stateIn(
+        ).stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
             initialValue = State()

@@ -2,4 +2,7 @@
     <string name="app_name">Pairing</string>
 
     <string name="retry">Retry</string>
+    <string name="details">Details</string>
+    <string name="back_button_acc">Back button</string>
+    <string name="mark_as_read">Mark as read</string>
 </resources>
