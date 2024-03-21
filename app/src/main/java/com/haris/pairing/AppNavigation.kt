@@ -86,9 +86,7 @@ private fun NavGraphBuilder.addHome(
     composable(
         route = LeafScreen.Home.createRoute(root)
     ) {
-        val id = navController.currentBackStackEntry
-            ?.savedStateHandle
-            ?.getLiveData<String>("id")?.observeAsState()?.value
+        val id = it.savedStateHandle.getLiveData<String>("key").observeAsState().value
 
         Home(id = id) {
             navController.navigate(
@@ -117,7 +115,7 @@ private fun NavGraphBuilder.addDetails(
             markAsRead = {
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.set("id", it)
+                    ?.set("key", it)
                 navController.popBackStack()
             }
         )

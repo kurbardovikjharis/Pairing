@@ -9,5 +9,4 @@ interface Repository {
     val data: Flow<Result<List<Item>>>
 
     suspend fun getRecipes()
-    fun removeFromList(id: String)
 }

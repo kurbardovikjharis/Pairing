@@ -53,7 +53,7 @@ private fun Details(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(onClick = {
-                markAsRead("")
+                markAsRead(state.id)
             }) {
                 Text(text = "mark as read")
             }

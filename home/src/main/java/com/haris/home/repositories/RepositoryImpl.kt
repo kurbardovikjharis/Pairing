@@ -5,7 +5,6 @@ import com.haris.home.data.entities.Item
 import com.haris.home.mapper.toItemList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -37,19 +36,6 @@ class RepositoryImpl @Inject constructor(
                 message = exception.message,
                 data = cachedData
             )
-        }
-    }
-
-    override fun removeFromList(id: String) {
-        val result = _data.value
-        if (result !is Result.Success) return
-
-        val mutableList = result.data?.toMutableList() ?: return
-        val item = mutableList.find { it.canonicalId == id }
-        mutableList.remove(item)
-
-        _data.update {
-            Result.Success(mutableList)
         }
     }
 }

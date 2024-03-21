@@ -17,6 +17,8 @@ class DetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val id: MutableStateFlow<String?> =
+        MutableStateFlow(savedStateHandle.get<String>("id"))
     private val desc: MutableStateFlow<String?> =
         MutableStateFlow(savedStateHandle.get<String>("description"))
     private val prepTime: MutableStateFlow<String?> =
@@ -24,21 +26,24 @@ class DetailsViewModel @Inject constructor(
     private val cookTime: MutableStateFlow<String?> =
         MutableStateFlow(savedStateHandle.get<String>("cookTime"))
 
-    val state: StateFlow<State> = combine(desc, prepTime, cookTime) { desc, prepTime, cookTime ->
-        State(
-            description = desc ?: "",
-            prepTime = prepTime ?: "",
-            cookTime = cookTime ?: ""
+    val state: StateFlow<State> =
+        combine(id, desc, prepTime, cookTime) { id, desc, prepTime, cookTime ->
+            State(
+                id = id ?: "",
+                description = desc ?: "",
+                prepTime = prepTime ?: "",
+                cookTime = cookTime ?: ""
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = State()
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = State()
-    )
 }
 
 @Immutable
 data class State(
+    val id: String = "",
     val description: String = "",
     val prepTime: String = "",
     val cookTime: String = "",
