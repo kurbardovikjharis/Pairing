@@ -20,6 +20,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.haris.details.Details
+import com.haris.home.Home
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -32,9 +34,16 @@ private sealed class LeafScreen(
 
     data object Home : LeafScreen("home")
 
-    data object RestaurantDetails : LeafScreen("restaurant_details/{id}") {
-        fun createRoute(root: Screen, id: String): String {
-            return "${root.route}/restaurant_details/$id"
+    data object RestaurantDetails :
+        LeafScreen("restaurant_details/{id}/optional_arguments?description={description}?prepTime={prepTime}?cookTime={cookTime}") {
+        fun createRoute(
+            root: Screen,
+            id: String,
+            description: String,
+            prepTime: String,
+            cookTime: String
+        ): String {
+            return "${root.route}/restaurant_details/$id/optional_arguments?description=$description?prepTime=$prepTime?cookTime=$cookTime"
         }
     }
 }
@@ -79,11 +88,17 @@ private fun NavGraphBuilder.addHome(
     composable(
         route = LeafScreen.Home.createRoute(root)
     ) {
-//        Home {
-//            navController.navigate(
-//                LeafScreen.RestaurantDetails.createRoute(root, it)
-//            )
-//        }
+        Home {
+            navController.navigate(
+                LeafScreen.RestaurantDetails.createRoute(
+                    root,
+                    it.canonical_id ?: "",
+                    it.description ?: "",
+                    it.total_time_minutes?.toString() ?: "",
+                    it.cook_time_minutes?.toString() ?: ""
+                )
+            )
+        }
     }
 }
 
@@ -97,8 +112,10 @@ private fun NavGraphBuilder.addRestaurantDetails(
         arguments = listOf(
             navArgument("id") { type = NavType.StringType },
         ),
-    ) {
-//        RestaurantDetails(navController::navigateUp)
+    ) {it->
+        Details(navController::navigateUp) {
+            it
+        }
     }
 }
 
